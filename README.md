@@ -62,7 +62,8 @@ Below is a basic diagram representing the states and transitions for Baymax:
    | maintain      |
    | activate      v
    |               Activation
- Combat Mode -------> Deactivation```
+ Combat Mode -------> Deactivation
+```
 
 
 ## Implementing Baymax's State Machine in Neo4j
@@ -84,7 +85,8 @@ CREATE (:State {name: 'Idle'}),
        (:State {name: 'Combat Mode'}),
        (:State {name: 'Low Battery'}),
        (:State {name: 'Maintenance Mode'}),
-       (:State {name: 'Deactivation'});```
+       (:State {name: 'Deactivation'});
+```
 
 In this query:
 
@@ -117,7 +119,8 @@ CREATE (idle)-[:ACTIVATE {label: 'activate'}]->(activation),
        (activation)-[:LOW_BATTERY_ALERT {label: 'low_battery_alert'}]->(lowBattery),
        (maintenance)-[:ACTIVATE {label: 'activate'}]->(activation),
        (activation)-[:DEACTIVATE {label: 'deactivate'}]->(deactivation),
-       (deactivation)-[:RESET {label: 'reset'}]->(idle);```
+       (deactivation)-[:RESET {label: 'reset'}]->(idle);
+```
 
 
 ## Explanation:
@@ -131,7 +134,8 @@ Once the nodes and relationships are in place, you can query the entire state ma
 
 ```// Query to return all nodes and relationships
 MATCH (s:State)-[r]->(t:State)
-RETURN s, r, t;```
+RETURN s, r, t;
+```
 
 This query will display all the states and transitions in your Neo4j database, allowing you to see how Baymax moves between different states based on the defined actions.
 
@@ -177,7 +181,8 @@ CREATE (idle)-[:ACTIVATE {label: 'activate'}]->(activation),
 
 // Query to return the full graph
 MATCH (s:State)-[r]->(t:State)
-RETURN s, r, t;```
+RETURN s, r, t;
+```
 
 ## Running the Script
 1. Open your Neo4j browser or connect to your Neo4j instance via cypher-shell.
