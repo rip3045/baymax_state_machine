@@ -65,6 +65,18 @@ Below is a basic diagram representing the states and transitions for Baymax:
  Combat Mode -------> Deactivation
 ```
 
+Output:
+```
+Initial state: idle
+After activation: activation
+After diagnosis: diagnosis_mode
+After providing care: care_mode
+After ending care: idle
+Low battery alert: low_battery
+After maintenance: maintenance_mode
+After deactivation: deactivation
+Reset to: idle
+```
 
 ## Implementing Baymax's State Machine in Neo4j
 
@@ -198,6 +210,8 @@ cypher-shell -u neo4j -p your_password -f baymax_state_machine.cypher
 ```
 
 By running this Neo4j example, you now have a visual, interactive model of Baymax's state machine, helping you better understand how state machines work in practice.
+
+![ScreenShot](/baymax_state_graph.png)
 
 
 ### How to Use
