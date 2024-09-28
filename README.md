@@ -193,7 +193,8 @@ RETURN s, r, t;
 
 *Using cypher-shell: If you have Neo4j installed locally, you can execute the .cypher file using cypher-shell from the command line:
 
-```cypher-shell -u neo4j -p your_password -f baymax_state_machine.cypher
+```
+cypher-shell -u neo4j -p your_password -f baymax_state_machine.cypher
 ```
 
 By running this Neo4j example, you now have a visual, interactive model of Baymax's state machine, helping you better understand how state machines work in practice.
