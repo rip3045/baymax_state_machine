@@ -62,4 +62,129 @@ Below is a basic diagram representing the states and transitions for Baymax:
    | maintain      |
    | activate      v
    |               Activation
- Combat Mode -------> Deactivation
+ Combat Mode -------> Deactivation```
+
+## Implementing Baymax's State Machine in Neo4j
+
+Now that you have a conceptual understanding of Baymax's state machine, let's dive into the practical implementation using **Neo4j**.
+
+We'll represent the **states** of Baymax as **nodes** and the **transitions** between them as **relationships**. The transitions are triggered by specific actions or events (such as "activate" or "care").
+
+### Step 1: Create the Nodes (States)
+Each state in Baymax's behavior model is represented as a node in the graph. Here's how you can create the nodes for the states using Cypher queries in Neo4j:
+
+```cypher
+// Create nodes for Baymax states
+CREATE (:State {name: 'Idle'}),
+       (:State {name: 'Activation'}),
+       (:State {name: 'Diagnosis Mode'}),
+       (:State {name: 'Care Mode'}),
+       (:State {name: 'Flight Mode'}),
+       (:State {name: 'Combat Mode'}),
+       (:State {name: 'Low Battery'}),
+       (:State {name: 'Maintenance Mode'}),
+       (:State {name: 'Deactivation'});```
+
+In this query:
+
+Each state (such as Idle, Activation, Diagnosis Mode, etc.) is created as a node labeled State with a property name that corresponds to the name of the state.
+
+## Step 2: Create the Relationships (Transitions)
+The transitions between states are represented as relationships in the graph. We will add an event trigger (action) for each transition in the form of a label on the relationships.
+
+```// Create relationships between states with action labels
+MATCH (idle:State {name: 'Idle'}),
+      (activation:State {name: 'Activation'}),
+      (diagnosis:State {name: 'Diagnosis Mode'}),
+      (care:State {name: 'Care Mode'}),
+      (flight:State {name: 'Flight Mode'}),
+      (combat:State {name: 'Combat Mode'}),
+      (lowBattery:State {name: 'Low Battery'}),
+      (maintenance:State {name: 'Maintenance Mode'}),
+      (deactivation:State {name: 'Deactivation'})
+
+CREATE (idle)-[:ACTIVATE {label: 'activate'}]->(activation),
+       (activation)-[:DIAGNOSE {label: 'diagnose'}]->(diagnosis),
+       (diagnosis)-[:CARE {label: 'care'}]->(care),
+       (diagnosis)-[:FLY {label: 'fly'}]->(flight),
+       (care)-[:END_CARE {label: 'end_care'}]->(idle),
+       (care)-[:FLY {label: 'fly'}]->(flight),
+       (activation)-[:ENGAGE_COMBAT {label: 'engage_combat'}]->(combat),
+       (combat)-[:LOW_BATTERY_ALERT {label: 'low_battery_alert'}]->(lowBattery),
+       (care)-[:LOW_BATTERY_ALERT {label: 'low_battery_alert'}]->(lowBattery),
+       (lowBattery)-[:MAINTAIN {label: 'maintain'}]->(maintenance),
+       (activation)-[:LOW_BATTERY_ALERT {label: 'low_battery_alert'}]->(lowBattery),
+       (maintenance)-[:ACTIVATE {label: 'activate'}]->(activation),
+       (activation)-[:DEACTIVATE {label: 'deactivate'}]->(deactivation),
+       (deactivation)-[:RESET {label: 'reset'}]->(idle);```
+
+Explanation:
+
+The MATCH clause identifies the nodes (states) we created earlier.
+The CREATE clause adds relationships (transitions) between the states.
+Each relationship has a label property that describes the action that triggers the transition (e.g., activate, care, fly, etc.).
+
+## Step 3: Query and Visualize the State Machine
+Once the nodes and relationships are in place, you can query the entire state machine to visualize it.
+
+```// Query to return all nodes and relationships
+MATCH (s:State)-[r]->(t:State)
+RETURN s, r, t;```
+
+This query will display all the states and transitions in your Neo4j database, allowing you to see how Baymax moves between different states based on the defined actions.
+
+## Full Cypher Script
+Here is the full Cypher script, which you can run directly in Neo4j to create the Baymax state machine:
+
+```// Create nodes for Baymax states
+CREATE (:State {name: 'Idle'}),
+       (:State {name: 'Activation'}),
+       (:State {name: 'Diagnosis Mode'}),
+       (:State {name: 'Care Mode'}),
+       (:State {name: 'Flight Mode'}),
+       (:State {name: 'Combat Mode'}),
+       (:State {name: 'Low Battery'}),
+       (:State {name: 'Maintenance Mode'}),
+       (:State {name: 'Deactivation'});
+
+// Create relationships between states with action labels
+MATCH (idle:State {name: 'Idle'}),
+      (activation:State {name: 'Activation'}),
+      (diagnosis:State {name: 'Diagnosis Mode'}),
+      (care:State {name: 'Care Mode'}),
+      (flight:State {name: 'Flight Mode'}),
+      (combat:State {name: 'Combat Mode'}),
+      (lowBattery:State {name: 'Low Battery'}),
+      (maintenance:State {name: 'Maintenance Mode'}),
+      (deactivation:State {name: 'Deactivation'})
+
+CREATE (idle)-[:ACTIVATE {label: 'activate'}]->(activation),
+       (activation)-[:DIAGNOSE {label: 'diagnose'}]->(diagnosis),
+       (diagnosis)-[:CARE {label: 'care'}]->(care),
+       (diagnosis)-[:FLY {label: 'fly'}]->(flight),
+       (care)-[:END_CARE {label: 'end_care'}]->(idle),
+       (care)-[:FLY {label: 'fly'}]->(flight),
+       (activation)-[:ENGAGE_COMBAT {label: 'engage_combat'}]->(combat),
+       (combat)-[:LOW_BATTERY_ALERT {label: 'low_battery_alert'}]->(lowBattery),
+       (care)-[:LOW_BATTERY_ALERT {label: 'low_battery_alert'}]->(lowBattery),
+       (lowBattery)-[:MAINTAIN {label: 'maintain'}]->(maintenance),
+       (activation)-[:LOW_BATTERY_ALERT {label: 'low_battery_alert'}]->(lowBattery),
+       (maintenance)-[:ACTIVATE {label: 'activate'}]->(activation),
+       (activation)-[:DEACTIVATE {label: 'deactivate'}]->(deactivation),
+       (deactivation)-[:RESET {label: 'reset'}]->(idle);
+
+// Query to return the full graph
+MATCH (s:State)-[r]->(t:State)
+RETURN s, r, t;```
+
+## Running the Script
+1. Open your Neo4j browser or connect to your Neo4j instance via cypher-shell.
+2. Paste the full script into the query editor and run it.
+3. Visualize the graph showing Baymax’s states and transitions.
+
+By running this Neo4j example, you now have a visual, interactive model of Baymax's state machine, helping you better understand how state machines work in practice.
+
+
+### How to Use
+- Copy the above markdown and add it as part of your GitHub walkthrough.
+- It includes the **Cypher** code snippets for creating and querying the state machine, along with explanations of how each step works.
