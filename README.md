@@ -64,6 +64,7 @@ Below is a basic diagram representing the states and transitions for Baymax:
    |               Activation
  Combat Mode -------> Deactivation```
 
+
 ## Implementing Baymax's State Machine in Neo4j
 
 Now that you have a conceptual understanding of Baymax's state machine, let's dive into the practical implementation using **Neo4j**.
@@ -118,7 +119,8 @@ CREATE (idle)-[:ACTIVATE {label: 'activate'}]->(activation),
        (activation)-[:DEACTIVATE {label: 'deactivate'}]->(deactivation),
        (deactivation)-[:RESET {label: 'reset'}]->(idle);```
 
-Explanation:
+
+## Explanation:
 
 The MATCH clause identifies the nodes (states) we created earlier.
 The CREATE clause adds relationships (transitions) between the states.
