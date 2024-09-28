@@ -187,7 +187,14 @@ RETURN s, r, t;
 ## Running the Script
 1. Open your Neo4j browser or connect to your Neo4j instance via cypher-shell.
 2. Paste the full script into the query editor and run it.
-3. Visualize the graph showing Baymax’s states and transitions.
+3. Execute the .cypher Script:
+
+* Using Neo4j Browser: You can copy the content of the .cypher file and paste it into the Neo4j Browser query editor.
+
+*Using cypher-shell: If you have Neo4j installed locally, you can execute the .cypher file using cypher-shell from the command line:
+
+```cypher-shell -u neo4j -p your_password -f baymax_state_machine.cypher
+```
 
 By running this Neo4j example, you now have a visual, interactive model of Baymax's state machine, helping you better understand how state machines work in practice.
 
